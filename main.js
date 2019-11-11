@@ -26,10 +26,10 @@ function time(){
 		var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
 		var seconds = Math.floor((distance % (1000 * 60)) / 1000);
     
-		// Output the result in an element with id="demo"
+		//adding the time left and score to the title
 		document.getElementById("id").innerHTML = minutes + "m " + seconds + "s " + "Score:" + score;
     
-		// If the count down is over, write some text 
+		// If the count down is over, write the final score
 		if (distance < 0) {
 			clearInterval(x);
 			document.getElementById("id").innerHTML = score;
@@ -94,10 +94,12 @@ pointLight.position.set(10, 16, 16);
 scene.add(pointLight);
 
 scene.add(cube);
+//adding arrays for checking the x and z positions of the poles
 var checkBoxesX = [];
 var checkBoxesZ = [];
 checkBoxesX[0]=cube.position.x;
 checkBoxesZ[0] = cube.position.z;
+//creating and adding the poles
 for(var i=0; i<1000; i++){
 	var trF=false;
 	var geom = new THREE.BoxGeometry(2,30, 2);
@@ -208,6 +210,7 @@ function doKeyDown(evt){
 			break;
 			
 		case 87://w
+			//checking to see if poles have been ran through and a score update is needed.
 			for(var xz=0; xz < checkBoxesX.length; xz++ ){
 				if(Math.abs(camera.position.x-checkBoxesX[xz])<10 && Math.abs(camera.position.z - checkBoxesZ[xz])<10){
 						for(var scP=0; scP<ranInX.length; scP++){
