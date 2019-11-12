@@ -34,19 +34,8 @@ function time(){
 			clearInterval(x);
 			document.getElementById("id").innerHTML = score;
 		}
-	}, 1000);
-	
-	
-	
+	}, 1000);	
 }
-
-
-
-
-
-
-
-
 
 var renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setClearColor(0xffffff);
@@ -55,9 +44,6 @@ document.body.appendChild(renderer.domElement);
  
 // create scene object
 var scene = new THREE.Scene;
-
-
-
 
 // create simple geometry and add to scene
 var boxGeometry = new THREE.BoxGeometry(2,30, 2);
@@ -108,40 +94,34 @@ for(var i=0; i<1000; i++){
 	var box = new THREE.Mesh(geom, material);
 	if(i<50){
 		box.position.x=Math.random()*100+20;
-	box.position.y=0;
-	box.position.z=Math.random()*95+1;
-	console.log('z: '+ box.position.z);
-		
+		box.position.y=0;
+		box.position.z=Math.random()*95+1;
+		console.log('z: '+ box.position.z);
 	}
 	else{
-	box.position.x=Math.random()*i+10;
-	box.position.y=0;
-	box.position.z=Math.random()*i+5;
+		box.position.x=Math.random()*i+10;
+		box.position.y=0;
+		box.position.z=Math.random()*i+5;
 	}
 	
 	for(var j=0; j<checkBoxesX.length; j++){
 		if (Math.abs(box.position.x - checkBoxesX[j])<20 && Math.abs(box.position.z - checkBoxesZ[j])<20){
 				trF=true;
-		}
-		
+		}	
 	}
 	if(!trF){
 		checkBoxesX[i+1]= box.position.x;
 		checkBoxesZ[i+1]= box.position.z;
 		scene.add(box);
-	
 	}
 }
 
 var firstMouseMove= true;
-
 var camPos = {x: 0, y: 0 , z: -1};
-
 var camMove = new THREE.Vector3(0,0,0), camStrafe = new THREE.Vector3(0,0,0);
 var cameraLookAt = new THREE.Vector3(0,0,-1);
 var cameraRight = new THREE.Vector3(1,0,0);
 var cameraUp = new THREE.Vector3().crossVectors(cameraRight, cameraLookAt);
- 
 var oldMousePos = {x: 0, y: 0}; 
  
 function handleMouseMove(evt) {
@@ -151,15 +131,14 @@ function handleMouseMove(evt) {
 		firstMouseMove = false;
 		return;
 	}
+	
 	//turn negative maybe
 	var yaw = (oldMousePos.x - event.clientX)/200.0;
 	var pitch = (oldMousePos.y - event.clientY)/200.0;
 	
 	cameraLookAt.applyAxisAngle(new THREE.Vector3(0,1,0), yaw);
 	cameraRight.applyAxisAngle(new THREE.Vector3(0,1,0), yaw);
-	
 	cameraLookAt.applyAxisAngle(cameraRight, pitch);
-	
 	
 	oldMousePos.x = event.clientX;
 	oldMousePos.y = event.clientY;
@@ -189,9 +168,9 @@ function doKeyUp(evt){
 			camMove.y = 0; 
 			camMove.z = 0;
 			break;
-	}
-	 
+	} 
 }
+
 var ranInX= [];
 var ranInZ= [];
 function doKeyDown(evt){
@@ -205,12 +184,12 @@ function doKeyDown(evt){
 			break;
 		case 68://d
 			camStrafe.x = cameraRight.x/1;
-			camStrafe.y = cameraRight.y/1;
+			camStrafe.y = cameraRight.y/1; 
 			camStrafe.z = cameraRight.z/1;
 			break;
 			
 		case 87://w
-			//checking to see if poles have been ran through and a score update is needed.
+			//checking to see if unique poles have been ran through and a score update is needed.
 			for(var xz=0; xz < checkBoxesX.length; xz++ ){
 				if(Math.abs(camera.position.x-checkBoxesX[xz])<10 && Math.abs(camera.position.z - checkBoxesZ[xz])<10){
 						for(var scP=0; scP<ranInX.length; scP++){
@@ -219,16 +198,13 @@ function doKeyDown(evt){
 							}
 							else{
 								checkCollision= false
-							} 
-							
+							} 	
 						}
 						if (!checkCollision){
 							score+=1;
 							ranInX.push(checkBoxesX[xz]);
 							ranInZ.push(checkBoxesZ[xz]);
 						}
-						//console.log('score: '+score);
-					
 				}
 			}
 			
@@ -244,11 +220,9 @@ function doKeyDown(evt){
 	}
 }
  
- 
- 
- document.addEventListener('mousemove', handleMouseMove, false);
- document.addEventListener('keydown',doKeyDown,false);
- document.addEventListener('keyup',doKeyUp,false);
+document.addEventListener('mousemove', handleMouseMove, false);
+document.addEventListener('keydown',doKeyDown,false);
+document.addEventListener('keyup',doKeyUp,false);
  
 renderer.render(scene, camera);
 function render() {
@@ -258,11 +232,8 @@ function render() {
 	var newLookAt = new THREE.Vector3().addVectors(camera.position, cameraLookAt);
 	camera.lookAt(newLookAt);
 	camera.up = cameraUp;
-    renderer.render(scene, camera);
-    requestAnimationFrame(render);
-	
-    
-	
+        renderer.render(scene, camera);
+        requestAnimationFrame(render);	
 }
 render();
 time();
